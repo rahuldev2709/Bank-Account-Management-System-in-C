@@ -1,0 +1,137 @@
+
+#include <stdio.h>
+
+struct Account
+{
+    int accountNo;
+    char name[50];
+    float balance;
+};
+
+void createAccount(struct Account *a)
+{
+    printf("\nEnter Account Number: ");
+    scanf("%d", &a->accountNo);
+
+    printf("Enter Account Holder Name: ");
+    scanf(" %49[^\n]", a->name);
+
+    printf("Enter Initial Balance: ");
+    scanf("%f", &a->balance);
+
+    printf("\nAccount Created Successfully!\n");
+}
+
+void deposit(struct Account *a)
+{
+    float amount;
+
+    printf("\nEnter Deposit Amount: ");
+    scanf("%f", &amount);
+
+    if (amount > 0)
+    {
+        a->balance += amount;
+        printf("Amount Deposited Successfully!\n");
+    }
+    else
+    {
+        printf("Invalid Amount!\n");
+    }
+}
+
+void withdraw(struct Account *a)
+{
+    float amount;
+
+    printf("\nEnter Withdrawal Amount: ");
+    scanf("%f", &amount);
+
+    if (amount <= 0)
+    {
+        printf("Invalid Amount!\n");
+    }
+    else if (amount <= a->balance)
+    {
+        a->balance -= amount;
+        printf("Withdrawal Successful!\n");
+    }
+    else
+    {
+        printf("Insufficient Balance!\n");
+    }
+}
+
+void displayAccount(struct Account a)
+{
+    printf("\n----- Account Details -----\n");
+    printf("Account Number: %d\n", a.accountNo);
+    printf("Account Holder: %s\n", a.name);
+    printf("Available Balance: %.2f\n", a.balance);
+}
+
+int main()
+{
+    struct Account a;
+    int choice;
+    int created = 0;
+
+    do
+    {
+        printf("\n===== BANK MANAGEMENT SYSTEM =====\n");
+        printf("1. Create Account\n");
+        printf("2. Deposit Money\n");
+        printf("3. Withdraw Money\n");
+        printf("4. Check Account Details\n");
+        printf("5. Exit\n");
+
+        printf("Enter Your Choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                if (created == 0)
+                {
+                    createAccount(&a);
+                    created = 1;
+                }
+                else
+                {
+                    printf("\nAccount Already Exists!\n");
+                }
+                break;
+
+            case 2:
+                if (created)
+                    deposit(&a);
+                else
+                    printf("\nCreate an account first!\n");
+                break;
+
+            case 3:
+                if (created)
+                    withdraw(&a);
+                else
+                    printf("\nCreate an account first!\n");
+                break;
+
+            case 4:
+                if (created)
+                    displayAccount(a);
+                else
+                    printf("\nNo Account Found!\n");
+                break;
+
+            case 5:
+                printf("\nThank You for Using Our System!\n");
+                break;
+
+            default:
+                printf("\nInvalid Choice! Try Again.\n");
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
